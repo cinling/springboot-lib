@@ -4,11 +4,14 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 
 /**
- * 时间工具
+ * 时间帮助类
  * 时间格式：2000-01-01 10:00:00.000
  */
 object TimeHelper {
-
+    /**
+     * 将时间字符串改转为时间戳。
+     * 兼容日期、日期时间、日期时间+毫秒 的格式。但是必须符合该类的命名规范
+     */
     fun parse(datetime: String): Long {
         val timestamp: Long = try {
             parseDatetimeMs(datetime)
