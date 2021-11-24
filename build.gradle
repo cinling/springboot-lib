@@ -6,8 +6,13 @@ plugins {
     id 'idea'
 }
 
+apply {
+    rootDir.canonicalPath + "publish.gradle"
+}
+
+
 group 'net.cinling'
-version '0.0.0-ALPHA.0'
+version '0.0.0-alpha.0'
 
 repositories {
     maven{ url 'https://maven.aliyun.com/repository/public'}
@@ -26,4 +31,81 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allJava
+    classifier = 'sources'
+}
+
+task javadocJar(type: Jar) {
+    from javadoc
+    classifier = 'javadoc'
+}
+
+
+publishing {
+    // 定义发布什么
+    publications {
+        mavenJava(MavenPublication) {
+             groupId = "net.cinling"
+             artifactId = "springboot-lib"
+//             version = project.version
+            // groupId,artifactId,version，如果不定义，则会按照以上默认值执行
+//            from components.java
+            artifact sourcesJar
+            artifact javadocJar
+            pom {
+                // 构件名称
+                // 区别于artifactId，可以理解为artifactName
+                name = 'springboot-lib'
+                // 构件描述
+                description = 'springboot-lib'
+                // 构件主页
+                url = 'https://github.com/cinling/springboot-lib'
+                // 许可证名称和地址
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                // 开发者信息
+                developers {
+                    developer {
+                        name = "cinling"
+                        email = '1105412681@qq.com'
+                    }
+                }
+                // 版本控制仓库地址
+                scm {
+                    url = 'https://github.com/cinling/springboot-lib'
+                    connection = 'scm:git:git://github.com/cinling/springboot-lib.git'
+                    developerConnection = 'scm:git:ssh://git@github.com:cinling/springboot-lib.git'
+                }
+            }
+        }
+    }
+    // 定义发布到哪里
+    repositories {
+        maven {
+            url "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2"
+            credentials {
+                // 这里就是之前在issues.sonatype.org注册的账号
+                username sonatypeUsername
+                password sonatypePassword
+            }
+        }
+    }
+}
+
+signing {
+    sign publishing.publications.mavenJava
+}
+
+
+javadoc {
+    // <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    // 防止本地打开中文乱码
+    options.addStringOption("charset", "UTF-8")
 }
