@@ -10,9 +10,19 @@ apply {
     rootDir.canonicalPath + "publish.gradle"
 }
 
+// setting local properties
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+ext.sonatypeUsername = properties.getProperty("sonatypeUsername")
+ext.sonatypePassword = properties.getProperty("sonatypePassword")
+
+ext."signing.keyId" = properties.getProperty("signing.keyId")
+ext."signing.password" = properties.getProperty("signing.password")
+ext."signing.secretKeyRingFile" = properties.getProperty("signing.secretKeyRingFile")
+
 
 group 'net.cinling'
-version '0.0.0-alpha.0'
+version '0.0.0-alpha.1'
 
 repositories {
     maven{ url 'https://maven.aliyun.com/repository/public'}

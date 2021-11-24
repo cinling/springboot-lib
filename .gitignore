@@ -44,4 +44,4 @@ nbdist/
 !*/build/*.xml
 
 
-publish.gradle
+local.properties

@@ -17,7 +17,7 @@ object TimeHelper {
             parseDatetimeMs(datetime)
         } catch (e: ParseException) {
             try {
-                parseDateTime(datetime)
+                parseDatetime(datetime)
             } catch (e: ParseException) {
                 try {
                     parseDate(datetime)
@@ -33,7 +33,7 @@ object TimeHelper {
         return SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").parse(datetimeMs).time
     }
 
-    private fun parseDateTime(datetime: String): Long {
+    private fun parseDatetime(datetime: String): Long {
         return SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(datetime).time
     }
 
