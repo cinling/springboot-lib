@@ -9,7 +9,7 @@ import java.util.Map;
 public class EnumHelperJavaTest {
 
     @Test
-    public void getMap() {
+    public void dictOf() {
         Map<String, AEnum> enumDict = EnumHelper.INSTANCE.dictOf(AEnum.class);
         Assertions.assertEquals(AEnum.A.getValue(), enumDict.get("aa").getValue());
     }

@@ -16,4 +16,9 @@ object EnumHelper {
         }
         return ret as Map<String, T>
     }
+
+    fun <T : IOption> label(clz: Class<T>, value: String, defaultValue: String): String {
+        val enum = dictOf(clz)[value]
+        return enum?.let { enum.getLabel() } ?: defaultValue
+    }
 }
