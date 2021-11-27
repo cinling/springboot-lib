@@ -22,7 +22,7 @@ ext."signing.secretKeyRingFile" = properties.getProperty("signing.secretKeyRingF
 
 
 group 'net.cinling'
-version '0.0.0-alpha.2'
+version '0.0.1-alpha.1'
 
 repositories {
     maven{ url 'https://maven.aliyun.com/repository/public'}
@@ -44,13 +44,13 @@ test {
 }
 
 task sourcesJar(type: Jar) {
-    from sourceSets.main.allJava
-    classifier = 'sources'
+    from sourceSets.main.allSource
+    classifier("sources")
 }
 
 task javadocJar(type: Jar) {
     from javadoc
-    classifier = 'javadoc'
+    classifier("javadoc")
 }
 
 
