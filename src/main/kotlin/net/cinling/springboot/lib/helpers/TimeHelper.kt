@@ -1,26 +1,44 @@
 package net.cinling.springboot.lib.helpers
 
+import java.text.Format
 import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.util.*
 
 /**
- * 时间帮助类
- * 时间格式：2000-01-01 10:00:00.000
+ * Time helper
+ * format：2000-01-01 10:00:00.000
  */
 object TimeHelper {
+    private const val FormatDate = "yyyy-MM-dd"
+    private const val FormatDatetime = "yyyy-MM-dd HH:mm:ss"
+    private const val FormatDatetimeMs = "yyyy-MM-dd HH:mm:ss.SSS"
+
+    fun timestamp(): Long {
+        return System.currentTimeMillis();
+    }
+
+    fun timestampSecond(): Long {
+        return timestamp() / 1000
+    }
+
     /**
-     * 将时间字符串改转为时间戳。
-     * 兼容日期、日期时间、日期时间+毫秒 的格式。但是必须符合该类的命名规范
+     * Change the time string to a timestamp.
+     *  support format:
+     *      "yyyy-MM-dd"
+     *      "yyyy-MM-dd HH:mm:ss"
+     *      "yyyy-MM-dd HH:mm:ss.SSS"
+     * @return Millisecond timestamp
      */
-    fun parse(datetime: String): Long {
+    fun timestamp(datetime: String): Long {
         val timestamp: Long = try {
-            parseDatetimeMs(datetime)
+            SimpleDateFormat(FormatDatetimeMs).parse(datetime).time
         } catch (e: ParseException) {
             try {
-                parseDatetime(datetime)
+                SimpleDateFormat(FormatDatetime).parse(datetime).time
             } catch (e: ParseException) {
                 try {
-                    parseDate(datetime)
+                    SimpleDateFormat(FormatDate).parse(datetime).time
                 } catch (e: ParseException) {
                     0L
                 }
@@ -29,15 +47,23 @@ object TimeHelper {
         return timestamp
     }
 
-    private fun parseDatetimeMs(datetimeMs: String): Long {
-        return SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").parse(datetimeMs).time
+    fun timestampSecond(datetime: String): Long {
+        return timestamp(datetime) / 1000
     }
 
-    private fun parseDatetime(datetime: String): Long {
-        return SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(datetime).time
+    fun date(): String {
+        return date(timestamp())
     }
 
-    private fun parseDate(date: String): Long {
-        return SimpleDateFormat("yyyy-MM-dd").parse(date).time
+    fun date(timestamp: Long): String {
+        return SimpleDateFormat(FormatDate).format(Date(timestamp));
+    }
+
+    fun datetime(): String {
+        return datetime(timestamp())
+    }
+
+    fun datetime(timestamp: Long): String {
+        return SimpleDateFormat(FormatDatetime).format(Date(timestamp))
     }
 }
