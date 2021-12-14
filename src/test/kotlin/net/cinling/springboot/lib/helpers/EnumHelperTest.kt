@@ -1,6 +1,7 @@
 package net.cinling.springboot.lib.helpers
 
 import net.cinling.springboot.lib.interfaces.IOption
+import net.cinling.springboot.lib.interfaces.IOptionWithValue
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
@@ -18,9 +19,8 @@ class EnumHelperTest {
     fun enumOf() {
         val roleClz = Role.values()[0].javaClass
 
-        Assertions.assertEquals(Role.Student, EnumHelper.enumOf(roleClz, Role.Student.value))
-        Assertions.assertEquals(Role.Student, EnumHelper.enumOf(roleClz, Role.Student.value.toLong()))
-        Assertions.assertEquals(Role.Student, EnumHelper.enumOf(roleClz, Role.Student.value.toString()))
+        Assertions.assertEquals(Role.Student, EnumHelper.enumOf(roleClz, Role.Student.getValue()))
+        Assertions.assertEquals(Role.Student, EnumHelper.enumOf(roleClz, Role.Student.getValue()))
     }
 
     @Test
@@ -29,22 +29,19 @@ class EnumHelperTest {
 
         Assertions.assertEquals(Role.Admin.getLabel(), EnumHelper.label(roleClz, Role.Admin.getValue()))
         Assertions.assertEquals(Role.Admin.getLabel(), EnumHelper.label(roleClz, 1))
-        Assertions.assertEquals(Role.Admin.getLabel(), EnumHelper.label(roleClz, 1L))
 
-        Assertions.assertEquals("DEFAULT", EnumHelper.label(roleClz, "undefined key", "DEFAULT"))
-        Assertions.assertEquals(Role.Admin.getLabel(), EnumHelper.label(roleClz, Role.Admin.value, "DEFAULT"))
-        Assertions.assertEquals(Role.Admin.getLabel(), EnumHelper.label(roleClz, Role.Admin.value.toLong(), "DEFAULT"))
+        Assertions.assertEquals("DEFAULT", EnumHelper.label(roleClz, 1111, "DEFAULT"))
     }
 }
 
-enum class Role(val value: Int, private val _label: String) : IOption {
+enum class Role(private val value: Int, private val _label: String) : IOptionWithValue<Int> {
     Admin(1, "Admin"),
     Teacher(2, "Teacher"),
     Student(3, "Student")
     ;
 
-    override fun getValue(): String {
-       return value.toString()
+    override fun getValue(): Int {
+       return value
     }
 
     override fun getLabel(): String {

@@ -1,56 +1,35 @@
 package net.cinling.springboot.lib.helpers
 
 import net.cinling.springboot.lib.interfaces.IOption
+import net.cinling.springboot.lib.interfaces.IOptionWithValue
 
 object EnumHelper {
-    private var enumDict: HashMap<String, Map<String, IOption>> = HashMap()
+    private var enumDict: HashMap<Any, Map<Any, IOptionWithValue<*>>> = HashMap()
 
-    fun <T: IOption> dictOf(clz: Class<T>): Map<String, T> {
+    fun <ValueType, EnumType : IOptionWithValue<ValueType>> dictOf(clz: Class<EnumType>): Map<ValueType, EnumType> {
         val ret = enumDict.getOrPut(clz.toString()) {
-            val dict = LinkedHashMap<String, T>()
+            val dict = LinkedHashMap<ValueType, EnumType>()
             val iOptions = clz.enumConstants
-            iOptions.forEach { iOption -> run {
-                dict[iOption.getValue()] = iOption
-            } }
+            iOptions.forEach { iOption ->
+                run {
+                    dict[iOption.getValue()] = iOption
+                }
+            }
             return dict
         }
-        return ret as Map<String, T>
+        return ret as Map<ValueType, EnumType>
     }
 
-    fun <T: IOption> enumOf(clz: Class<T>, value: String): T? {
+    fun <ValueType, EnumType : IOptionWithValue<ValueType>> enumOf(clz: Class<EnumType>, value: ValueType): EnumType? {
         return dictOf(clz)[value]
     }
 
-    fun <T: IOption> enumOf(clz: Class<T>, value: Int): T? {
-        return enumOf(clz, value.toString())
+    fun <ValueType, EnumType : IOptionWithValue<ValueType>> label(clz: Class<EnumType>, value: ValueType, defaultValue: String): String {
+        val enum = enumOf(clz, value)
+        return enum?.getLabel() ?: defaultValue
     }
 
-    fun <T: IOption> enumOf(clz: Class<T>, value: Long): T? {
-        return enumOf(clz, value.toString())
-    }
-
-    fun <T : IOption> label(clz: Class<T>, value: String, defaultValue: String): String {
-        val enum = dictOf(clz)[value]
-        return enum?.let { enum.getLabel() } ?: defaultValue
-    }
-
-    fun <T : IOption> label(clz: Class<T>, value: Long, defaultValue: String): String {
-        return label(clz, value.toString(), defaultValue)
-    }
-
-    fun <T : IOption> label(clz: Class<T>, value: Int, defaultValue: String): String {
-        return label(clz, value.toString(), defaultValue)
-    }
-
-    fun <T : IOption> label(clz: Class<T>, value: String): String {
+    fun <ValueType, EnumType : IOptionWithValue<ValueType>> label(clz: Class<EnumType>, value: ValueType): String {
         return label(clz, value, "")
-    }
-
-    fun <T : IOption> label(clz: Class<T>, value: Long): String {
-        return label(clz, value.toString())
-    }
-
-    fun <T : IOption> label(clz: Class<T>, value: Int): String {
-        return label(clz, value.toString())
     }
 }
