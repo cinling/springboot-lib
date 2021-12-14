@@ -1,9 +1,9 @@
 package net.cinling.springboot.lib.interfaces
 
-/**
- * 可选接口实现
- */
-interface IOption {
-    fun getValue(): String
+interface IOption : IOptionWithValue<String> {
+}
+
+interface IOptionWithValue<ValueType> {
+    fun getValue(): ValueType
     fun getLabel(): String
 }

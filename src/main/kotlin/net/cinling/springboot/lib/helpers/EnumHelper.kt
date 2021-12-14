@@ -5,7 +5,7 @@ import net.cinling.springboot.lib.interfaces.IOption
 object EnumHelper {
     private var enumDict: HashMap<String, Map<String, IOption>> = HashMap()
 
-    fun <T : IOption> dictOf(clz: Class<T>): Map<String, T> {
+    fun <T: IOption> dictOf(clz: Class<T>): Map<String, T> {
         val ret = enumDict.getOrPut(clz.toString()) {
             val dict = LinkedHashMap<String, T>()
             val iOptions = clz.enumConstants

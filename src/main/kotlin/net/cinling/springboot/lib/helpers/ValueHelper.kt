@@ -49,4 +49,12 @@ object ValueHelper {
     fun notEmpty(value: Any?): Boolean {
         return !isEmpty(value)
     }
+
+    fun <T> getNotNullOrDefault(maybeNullValue: T, defaultValue: T): T {
+        return if (Objects.nonNull(maybeNullValue)) maybeNullValue else defaultValue
+    }
+
+    fun <T> getNotEmptyOrDefault (maybeEmptyValue: T, defaultValue: T): T {
+        return if (isEmpty(maybeEmptyValue)) defaultValue else maybeEmptyValue
+    }
 }
