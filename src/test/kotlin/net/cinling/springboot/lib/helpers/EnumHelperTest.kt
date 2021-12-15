@@ -1,7 +1,6 @@
 package net.cinling.springboot.lib.helpers
 
-import net.cinling.springboot.lib.interfaces.IOption
-import net.cinling.springboot.lib.interfaces.IOptionWithValue
+import net.cinling.springboot.lib.interfaces.IOptionInt
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
@@ -34,7 +33,7 @@ class EnumHelperTest {
     }
 }
 
-enum class Role(private val value: Int, private val _label: String) : IOptionWithValue<Int> {
+enum class Role(private val value: Int, private val _label: String) : IOptionInt {
     Admin(1, "Admin"),
     Teacher(2, "Teacher"),
     Student(3, "Student")
