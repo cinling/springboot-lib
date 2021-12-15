@@ -1,5 +1,7 @@
 package net.cinling.springboot.lib.helpers
 
+import net.cinling.springboot.lib.annotations.IOptionSkipUniqueCheck
+import net.cinling.springboot.lib.exceptions.EnumException
 import net.cinling.springboot.lib.interfaces.IOption
 
 object EnumHelper {
@@ -9,8 +11,12 @@ object EnumHelper {
         val ret = enumDict.getOrPut(clz.toString()) {
             val dict = LinkedHashMap<ValueType, EnumType>()
             val iOptions = clz.enumConstants
+            val uniqueCheck = clz.getAnnotation(IOptionSkipUniqueCheck::class.java) == null
             iOptions.forEach { iOption ->
                 run {
+                    if (uniqueCheck && dict.containsKey(iOption.getValue())) {
+                        throw EnumException("Enum:$clz has duplicate value:${iOption.getValue()}")
+                    }
                     dict[iOption.getValue()] = iOption
                 }
             }
