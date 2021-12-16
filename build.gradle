@@ -23,7 +23,7 @@ ext."signing.secretKeyRingFile" = properties.getProperty("signing.secretKeyRingF
 
 
 group 'net.cinling'
-version '0.0.7.ALPHA.1'
+version '0.0.7'
 
 repositories {
     maven{ url 'https://maven.aliyun.com/repository/public'}

@@ -9,7 +9,6 @@ interface IOptionInt : IOption<Int> {
 }
 
 interface IOptionLong: IOption<Long> {
-
 }
 
 interface IOptionString : IOption<String> {
